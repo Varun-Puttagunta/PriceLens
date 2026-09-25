@@ -123,7 +123,7 @@ hr { border: 0; border-top: 1px solid var(--hairline); margin: 2.5rem 0; }
 
 /* ------------------------------------------------------------------ nav -- */
 .nav {
-  position: sticky; top: 0; z-index: 50;
+  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 50;
   background: color-mix(in srgb, var(--page) 88%, transparent);
   backdrop-filter: saturate(1.6) blur(12px);
   border-bottom: 1px solid var(--hairline);
@@ -371,7 +371,7 @@ details.comp[open] > summary { background: var(--surface-2); }
 /* ------------------------------------------------------------ tool page -- */
 .tool-grid { display: grid; grid-template-columns: 340px minmax(0, 1fr); gap: 1.4rem; align-items: start; }
 @media (max-width: 1040px) { .tool-grid { grid-template-columns: minmax(0,1fr); } }
-.tool-panel { position: sticky; top: 78px; max-height: calc(100vh - 96px); overflow-y: auto; }
+.tool-panel { position: sticky; top: calc(78px + env(safe-area-inset-top, 0px)); max-height: calc(100vh - 96px); overflow-y: auto; }
 @media (max-width: 1040px) { .tool-panel { position: static; max-height: none; } }
 
 .valuation-hero {

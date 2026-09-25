@@ -54,9 +54,10 @@
       </p>
     </div>
     <div class="btn-row no-print">
-      <button class="btn btn--ghost btn--sm" id="btn-print">Print / PDF</button>
-      <button class="btn btn--ghost btn--sm" id="btn-csv">Download CSV</button>
-      <button class="btn btn--ghost btn--sm" id="btn-json">Download JSON</button>
+      <button class="btn btn--ghost btn--sm" id="btn-print" data-needs-toplevel="print">Print / PDF</button>
+      <button class="btn btn--ghost btn--sm" id="btn-csv" data-needs-toplevel="download">Download CSV</button>
+      <button class="btn btn--ghost btn--sm" id="btn-json" data-needs-toplevel="download">Download JSON</button>
+      <span class="small muted" data-embedded-note hidden>Open the full site to print or export.</span>
     </div>
   </div>
 

@@ -87,8 +87,27 @@
     });
   }
 
+  /* ----------------------------------------------------------- embedding -- */
+  // Printing and file downloads are blocked inside a sandboxed frame, and they
+  // fail silently — the button just does nothing. Better to not offer them
+  // there than to hand someone a control that lies.
+  var embedded = (function () {
+    try { return window.self !== window.top; } catch (e) { return true; }
+  })();
+
+  function hideUnavailableControls() {
+    if (!embedded) return;
+    var notes = [];
+    document.querySelectorAll('[data-needs-toplevel]').forEach(function (n) {
+      n.hidden = true;
+      if (n.dataset.needsToplevel) notes.push(n.dataset.needsToplevel);
+    });
+    document.querySelectorAll('[data-embedded-note]').forEach(function (n) { n.hidden = false; });
+  }
+
   /* ---------------------------------------------------------------- nav -- */
   function initChrome() {
+    hideUnavailableControls();
     var toggle = document.querySelector('[data-theme-toggle]');
     if (toggle) {
       toggle.addEventListener('click', function () {
@@ -118,6 +137,6 @@
 
   return {
     fmt: fmt, applyTheme: applyTheme, currentTheme: currentTheme,
-    wireTableToggles: wireTableToggles
+    wireTableToggles: wireTableToggles, embedded: embedded
   };
 });
