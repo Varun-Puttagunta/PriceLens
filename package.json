@@ -1,0 +1,16 @@
+{
+  "name": "pricelens-ai",
+  "version": "1.0.0",
+  "description": "A comparable-sales valuation engine and list-price strategist for residential real estate.",
+  "private": true,
+  "type": "commonjs",
+  "scripts": {
+    "test": "node --test tests/engine.test.mjs",
+    "data": "node tools/generate-data.mjs",
+    "verify-data": "node tools/verify-data.mjs",
+    "dev": "npx http-server -p 8080 -c-1 ."
+  },
+  "keywords": ["real-estate", "valuation", "cma", "pricing", "hedonic-regression"],
+  "license": "MIT",
+  "engines": { "node": ">=18" }
+}

@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en" data-palette="#2a78d6,#eb6834,#1baf7a">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pricing tool — PriceLens AI</title>
+<meta name="description" content="Run a comparable-sales valuation and get a recommended list price, with every comp and every adjustment shown.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%231c5cab'/><circle cx='16' cy='16' r='8.5' fill='none' stroke='white' stroke-width='2.4'/><path d='M12.5 18.5l3-3.5 2.5 2 3-4.5' fill='none' stroke='white' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'/></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="assets/css/site.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="nav">
+  <div class="wrap nav__inner">
+    <a class="brand" href="index.html">
+      <svg class="brand__mark" viewBox="0 0 32 32" aria-hidden="true">
+        <rect width="32" height="32" rx="8" fill="var(--brand)"/>
+        <circle cx="16" cy="16" r="8.5" fill="none" stroke="#fff" stroke-width="2.4"/>
+        <path d="M12.5 18.5l3-3.5 2.5 2 3-4.5" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      PriceLens<span class="brand__ai">&nbsp;AI</span>
+    </a>
+    <button class="nav__burger" data-nav-burger aria-label="Menu">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+    </button>
+    <nav class="nav__links" data-nav-links aria-label="Main">
+      <a href="index.html">Overview</a>
+      <a href="pricing-tool.html">Pricing tool</a>
+      <a href="portfolio.html">Results</a>
+      <a href="methodology.html">Methodology</a>
+    </nav>
+    <div class="nav__tools">
+      <button class="theme-toggle" data-theme-toggle aria-label="Switch between light and dark">
+        <svg class="icon-moon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1111.2 3a7 7 0 009.8 9.8z"/></svg>
+        <svg class="icon-sun" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+      </button>
+      <a class="btn btn--primary btn--sm no-print" href="pricing-tool.html">Open the tool</a>
+    </div>
+  </div>
+</header>
+
+<main id="main" class="wrap" style="padding-top:1.8rem;padding-bottom:3rem">
+
+  <div class="card__head" style="margin-bottom:1.4rem">
+    <div>
+      <p class="eyebrow">Pricing tool</p>
+      <h1 style="font-size:clamp(1.7rem,3.6vw,2.4rem);margin-bottom:.35rem">Comparative market analysis</h1>
+      <p class="muted" style="margin:0;font-size:.93rem">
+        Valued as of <span id="as-of">—</span> against <span id="pool-size">—</span> closed sales
+        in the <span id="market-name">—</span> market.
+      </p>
+    </div>
+    <div class="btn-row no-print">
+      <button class="btn btn--ghost btn--sm" id="btn-print">Print / PDF</button>
+      <button class="btn btn--ghost btn--sm" id="btn-csv">Download CSV</button>
+      <button class="btn btn--ghost btn--sm" id="btn-json">Download JSON</button>
+    </div>
+  </div>
+
+  <div class="tool-grid">
+
+    <!-- ============================================================ inputs -->
+    <form class="card tool-panel no-print" id="subject-form" autocomplete="off">
+      <fieldset>
+        <legend>Start from</legend>
+        <label class="field">
+          <span class="field__label">Load a listing from the market book</span>
+          <select id="preset"><option value="">Custom property</option></select>
+          <span class="field__hint">Or edit any field below to price your own.</span>
+        </label>
+      </fieldset>
+
+      <fieldset>
+        <legend>The property</legend>
+        <label class="field">
+          <span class="field__label">Submarket</span>
+          <select id="f-city"></select>
+        </label>
+        <label class="field">
+          <span class="field__label">Property type</span>
+          <select id="f-type">
+            <option>Single Family</option><option>Townhome</option><option>Condo</option>
+          </select>
+        </label>
+        <div class="field-row">
+          <label class="field">
+            <span class="field__label">Bedrooms</span>
+            <input type="number" id="f-beds" min="1" max="8" step="1" value="4">
+          </label>
+          <label class="field">
+            <span class="field__label">Bathrooms</span>
+            <input type="number" id="f-baths" min="1" max="8" step="0.5" value="3">
+          </label>
+        </div>
+        <div class="field-row">
+          <label class="field">
+            <span class="field__label">Living area (sqft)</span>
+            <input type="number" id="f-sqft" min="400" max="12000" step="10" value="2800">
+          </label>
+          <label class="field">
+            <span class="field__label">Lot size (sqft)</span>
+            <input type="number" id="f-lot" min="0" max="80000" step="50" value="7500">
+          </label>
+        </div>
+        <div class="field-row">
+          <label class="field">
+            <span class="field__label">Year built</span>
+            <input type="number" id="f-year" min="1900" max="2026" step="1" value="2012">
+          </label>
+          <label class="field">
+            <span class="field__label">Garage spaces</span>
+            <input type="number" id="f-garage" min="0" max="6" step="1" value="2">
+          </label>
+        </div>
+        <label class="field">
+          <span class="field__label">Condition</span>
+          <select id="f-condition">
+            <option value="1">1 — Dated</option>
+            <option value="2">2 — Fair</option>
+            <option value="3" selected>3 — Average</option>
+            <option value="4">4 — Updated</option>
+            <option value="5">5 — Renovated</option>
+          </select>
+        </label>
+        <div class="stack" style="margin-top:.8rem">
+          <label class="check"><input type="checkbox" id="f-pool"> Pool</label>
+          <label class="check"><input type="checkbox" id="f-greenbelt"> Greenbelt or view lot</label>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Seller assumptions</legend>
+        <div class="field-row">
+          <label class="field">
+            <span class="field__label">Commission</span>
+            <input type="number" id="f-commission" min="0" max="10" step="0.25" value="5">
+            <span class="field__hint">% of sale price</span>
+          </label>
+          <label class="field">
+            <span class="field__label">Monthly carry</span>
+            <input type="number" id="f-carry" min="0" max="3" step="0.05" value="0.55">
+            <span class="field__hint">% of value / month</span>
+          </label>
+        </div>
+        <div class="field-row">
+          <label class="field">
+            <span class="field__label">Days to close</span>
+            <input type="number" id="f-closing" min="0" max="120" step="1" value="32">
+          </label>
+          <label class="field">
+            <span class="field__label">Search band</span>
+            <input type="number" id="f-band" min="0" max="250000" step="5000" value="25000">
+            <span class="field__hint">portal filter step</span>
+          </label>
+        </div>
+      </fieldset>
+
+      <div class="btn-row">
+        <button type="button" class="btn btn--ghost btn--sm" id="btn-random">Random property</button>
+        <button type="reset" class="btn btn--quiet btn--sm" id="btn-reset">Reset</button>
+      </div>
+    </form>
+
+    <!-- =========================================================== results -->
+    <div class="stack" style="--gap:1.4rem">
+
+      <div id="no-comps" class="callout callout--warn" hidden>
+        <strong>No comparable sales within reach.</strong>
+        <span id="no-comps-detail"></span>
+      </div>
+
+      <!-- valuation -->
+      <section class="valuation-hero" id="valuation-card">
+        <div>
+          <p class="stat__label">Estimated market value</p>
+          <p class="hero-figure" id="v-estimate">—</p>
+          <p class="stat__note" id="v-psf">—</p>
+          <div class="range-bar">
+            <div class="range-bar__track">
+              <div class="range-bar__band" style="left:0;right:0"></div>
+              <div class="range-bar__pin" id="v-pin" style="left:50%"></div>
+            </div>
+            <div class="range-bar__ends"><span id="v-low">—</span><span id="v-high">—</span></div>
+          </div>
+        </div>
+        <div style="min-width:min(290px,100%)">
+          <div style="display:flex;align-items:center;gap:.7rem;margin-bottom:.9rem">
+            <span class="grade grade--B" id="v-grade">—</span>
+            <div>
+              <p style="margin:0;font-weight:600;font-size:.95rem" id="v-grade-title">Confidence</p>
+              <p class="small muted" style="margin:0" id="v-grade-score">—</p>
+            </div>
+          </div>
+          <div id="v-signals"></div>
+        </div>
+      </section>
+      <p class="small muted" id="v-blurb" style="margin:-.4rem 0 0"></p>
+
+      <!-- recommendation -->
+      <section class="card card--pad-lg">
+        <div class="card__head">
+          <div>
+            <p class="eyebrow" style="margin-bottom:.4rem">Recommendation</p>
+            <h2 style="font-size:1.3rem;margin:0">List at <span id="r-price">—</span></h2>
+          </div>
+          <span class="pill" id="r-pill"><span class="pill__dot"></span><span id="r-pill-text">—</span></span>
+        </div>
+        <p id="r-reason" style="color:var(--ink-2);font-size:.95rem"></p>
+        <div class="grid grid--4" style="gap:.8rem;margin:1.2rem 0">
+          <div class="stat" style="padding:.85rem .95rem">
+            <p class="stat__label">Expected days on market</p>
+            <p class="stat__value" style="font-size:1.4rem" id="r-dom">—</p>
+          </div>
+          <div class="stat" style="padding:.85rem .95rem">
+            <p class="stat__label">Sold within 60 days</p>
+            <p class="stat__value" style="font-size:1.4rem" id="r-prob">—</p>
+          </div>
+          <div class="stat" style="padding:.85rem .95rem">
+            <p class="stat__label">Expected sale price</p>
+            <p class="stat__value" style="font-size:1.4rem" id="r-sale">—</p>
+          </div>
+          <div class="stat" style="padding:.85rem .95rem">
+            <p class="stat__label">Net to seller</p>
+            <p class="stat__value" style="font-size:1.4rem" id="r-net">—</p>
+          </div>
+        </div>
+        <div class="callout" id="r-band-note"></div>
+        <div class="callout callout--warn" id="r-anchor-note" style="margin-top:.7rem"></div>
+      </section>
+
+      <!-- trade-off charts: two measures, two charts, never two axes -->
+      <div class="grid grid--2">
+        <section class="card">
+          <div class="chart-block__head">
+            <div>
+              <h3 class="card__title">Net proceeds by asking price</h3>
+              <p class="card__sub">After commission and carrying cost</p>
+            </div>
+          </div>
+          <ul class="chart__legend" id="net-legend"></ul>
+          <div id="net-chart" style="min-height:230px"></div>
+          <button class="btn btn--quiet btn--sm no-print" data-table-toggle="net-table" style="margin-top:.7rem">Show the numbers</button>
+          <div class="table-view" id="net-table" hidden></div>
+        </section>
+        <section class="card">
+          <div class="chart-block__head">
+            <div>
+              <h3 class="card__title">Time on market by asking price</h3>
+              <p class="card__sub">Projected days to an accepted offer</p>
+            </div>
+          </div>
+          <ul class="chart__legend" id="dom-legend"></ul>
+          <div id="dom-chart" style="min-height:230px"></div>
+          <button class="btn btn--quiet btn--sm no-print" data-table-toggle="dom-table" style="margin-top:.7rem">Show the numbers</button>
+          <div class="table-view" id="dom-table" hidden></div>
+        </section>
+      </div>
+
+      <!-- comps -->
+      <section class="card card--flush">
+        <div class="card__head" style="padding:1.35rem 1.35rem 0;margin-bottom:.8rem">
+          <div>
+            <h3 class="card__title">Comparable sales</h3>
+            <p class="card__sub" id="comps-sub">—</p>
+          </div>
+          <span class="small muted">Open a row for its full adjustment grid</span>
+        </div>
+        <div id="comps-list"></div>
+      </section>
+
+      <!-- market context -->
+      <section class="card">
+        <div class="card__head">
+          <div>
+            <h3 class="card__title">What the model measured in this market</h3>
+            <p class="card__sub" id="fit-sub">—</p>
+          </div>
+        </div>
+        <div class="grid grid--2" style="gap:1.2rem">
+          <dl class="kv" id="fit-rates"></dl>
+          <div>
+            <p class="small muted" style="margin-top:0">
+              These are not rules of thumb. Each one is a coefficient from a hedonic regression
+              across every closed sale in the window, re-fit every time the tool runs. A rate the
+              data cannot separate from the others is left out rather than guessed at.
+            </p>
+            <a class="small" href="methodology.html">Read how the fit works →</a>
+          </div>
+        </div>
+      </section>
+
+      <p class="note">
+        This is a comparative market analysis produced by a model, not an appraisal, and not a
+        guarantee of sale price. Market data on this site is synthetic sample data — see the
+        <a href="methodology.html#data">methodology</a>.
+      </p>
+    </div>
+  </div>
+</main>
+
+<footer class="footer">
+  <div class="wrap footer__grid">
+    <div>
+      <a class="brand" href="index.html" style="margin-bottom:.7rem">
+        <svg class="brand__mark" viewBox="0 0 32 32" aria-hidden="true">
+          <rect width="32" height="32" rx="8" fill="var(--brand)"/>
+          <circle cx="16" cy="16" r="8.5" fill="none" stroke="#fff" stroke-width="2.4"/>
+          <path d="M12.5 18.5l3-3.5 2.5 2 3-4.5" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        PriceLens<span class="brand__ai">&nbsp;AI</span>
+      </a>
+      <p class="small muted" style="max-width:38ch">
+        A comparable-sales valuation engine and list-price strategist for residential real estate.
+        Built by Varun Puttagunta.
+      </p>
+    </div>
+    <div>
+      <h4>Product</h4>
+      <ul>
+        <li><a href="pricing-tool.html">Pricing tool</a></li>
+        <li><a href="portfolio.html">Engagement results</a></li>
+        <li><a href="methodology.html">Methodology</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>About the data</h4>
+      <ul>
+        <li><a href="methodology.html#data">Where the numbers come from</a></li>
+        <li><a href="methodology.html#limits">What this model can't do</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="wrap" style="margin-top:2rem;padding-top:1.2rem;border-top:1px solid var(--hairline)">
+    <p class="small muted" style="margin:0">
+      © <span data-year></span> PriceLens AI. Demonstration market data is synthetic; portfolio
+      totals reflect the real engagement. Not an appraisal.
+    </p>
+  </div>
+</footer>
+<script src="assets/js/data.js"></script>
+<script src="assets/js/engine.js"></script>
+<script src="assets/js/charts.js"></script>
+<script src="assets/js/app.js"></script>
+<script src="assets/js/tool.js"></script>
+</body>
+</html>

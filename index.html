@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en" data-palette="#2a78d6,#eb6834,#1baf7a">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PriceLens AI — Residential pricing intelligence</title>
+<meta name="description" content="PriceLens AI turns comparable sales into a defensible list price: a valuation with a confidence grade, a line-item adjustment grid, and the asking price that maximises a seller's net proceeds.">
+<meta property="og:title" content="PriceLens AI — Residential pricing intelligence">
+<meta property="og:description" content="A comparable-sales valuation engine and list-price strategist for residential real estate.">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%231c5cab'/><circle cx='16' cy='16' r='8.5' fill='none' stroke='white' stroke-width='2.4'/><path d='M12.5 18.5l3-3.5 2.5 2 3-4.5' fill='none' stroke='white' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'/></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="assets/css/site.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="nav">
+  <div class="wrap nav__inner">
+    <a class="brand" href="index.html">
+      <svg class="brand__mark" viewBox="0 0 32 32" aria-hidden="true">
+        <rect width="32" height="32" rx="8" fill="var(--brand)"/>
+        <circle cx="16" cy="16" r="8.5" fill="none" stroke="#fff" stroke-width="2.4"/>
+        <path d="M12.5 18.5l3-3.5 2.5 2 3-4.5" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      PriceLens<span class="brand__ai">&nbsp;AI</span>
+    </a>
+    <button class="nav__burger" data-nav-burger aria-label="Menu">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+    </button>
+    <nav class="nav__links" data-nav-links aria-label="Main">
+      <a href="index.html">Overview</a>
+      <a href="pricing-tool.html">Pricing tool</a>
+      <a href="portfolio.html">Results</a>
+      <a href="methodology.html">Methodology</a>
+    </nav>
+    <div class="nav__tools">
+      <button class="theme-toggle" data-theme-toggle aria-label="Switch between light and dark">
+        <svg class="icon-moon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1111.2 3a7 7 0 009.8 9.8z"/></svg>
+        <svg class="icon-sun" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+      </button>
+      <a class="btn btn--primary btn--sm no-print" href="pricing-tool.html">Open the tool</a>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+
+  <!-- ================================================================ hero -->
+  <section class="hero">
+    <div class="wrap hero__grid">
+      <div>
+        <p class="eyebrow">Residential pricing intelligence</p>
+        <h1>Price a home on <span class="hero__accent">evidence</span>, not instinct.</h1>
+        <p class="lede">
+          Most listings are priced from a round number and a feeling. PriceLens AI builds the
+          number the way an appraiser would — comparable sales, a line-item adjustment grid, a
+          confidence grade — and then answers the question the seller actually cares about:
+          which asking price puts the most money in their pocket.
+        </p>
+        <div class="btn-row" style="margin-top:1.6rem">
+          <a class="btn btn--primary" href="pricing-tool.html">
+            Price a property
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </a>
+          <a class="btn btn--ghost" href="portfolio.html">See the engagement results</a>
+        </div>
+        <p class="small muted" style="margin-top:1.1rem">
+          The engine runs entirely in your browser. Nothing you type is uploaded anywhere.
+        </p>
+      </div>
+
+      <!-- Live valuation, computed on load so the homepage is the product. -->
+      <div class="card card--pad-lg" id="hero-card" style="box-shadow:var(--shadow-lg)">
+        <div class="card__head" style="margin-bottom:.8rem">
+          <div>
+            <p class="card__title" id="hero-address">Loading a sample property…</p>
+            <p class="card__sub" id="hero-specs">&nbsp;</p>
+          </div>
+          <span class="pill" id="hero-grade-pill"><span class="pill__dot"></span><span id="hero-grade-text">—</span></span>
+        </div>
+        <p class="stat__label">Estimated market value</p>
+        <p class="hero-figure" id="hero-estimate">—</p>
+        <div class="range-bar">
+          <div class="range-bar__track">
+            <div class="range-bar__band" id="hero-band" style="left:18%;right:18%"></div>
+            <div class="range-bar__pin" id="hero-pin" style="left:50%"></div>
+          </div>
+          <div class="range-bar__ends"><span id="hero-low">—</span><span id="hero-high">—</span></div>
+        </div>
+        <hr style="margin:1.25rem 0">
+        <dl class="kv">
+          <dt>Recommended list price</dt><dd id="hero-list">—</dd>
+          <dt>Expected days on market</dt><dd id="hero-dom">—</dd>
+          <dt>Comparable sales used</dt><dd id="hero-comps">—</dd>
+        </dl>
+        <p class="small muted" style="margin:1rem 0 0">
+          Computed in your browser just now from <span id="hero-poolsize">—</span> closed sales.<br>
+          <a href="pricing-tool.html">Try it on any property →</a>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================= proof band -->
+  <section class="proof-band">
+    <div class="wrap">
+      <div class="proof-band__inner">
+        <div class="proof-band__cell">
+          <div class="proof-band__value">36</div>
+          <div class="proof-band__label">properties priced and taken to close</div>
+        </div>
+        <div class="proof-band__cell">
+          <div class="proof-band__value">$21.8M</div>
+          <div class="proof-band__label">sales volume supported</div>
+        </div>
+        <div class="proof-band__cell">
+          <div class="proof-band__value" id="proof-error">—</div>
+          <div class="proof-band__label">median valuation error, out of sample</div>
+        </div>
+        <div class="proof-band__cell">
+          <div class="proof-band__value" id="proof-coverage">—</div>
+          <div class="proof-band__label">of sales closed inside the stated range</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ problem -->
+  <section class="section">
+    <div class="wrap">
+      <div class="grid grid--2" style="gap:clamp(1.5rem,4vw,3.5rem);align-items:center">
+        <div>
+          <p class="eyebrow">The problem</p>
+          <h2>Overpricing is the most expensive decision in a listing.</h2>
+          <p class="lede">
+            An asking price set 5% high does not sell for 5% more. It sits. It collects
+            price cuts, and every cut is a public signal that the seller will move. By the
+            time it closes, it has usually given back more than the optimistic number was
+            ever worth — plus two extra months of carrying cost.
+          </p>
+          <p>
+            PriceLens models that trade-off explicitly. For every candidate asking price it
+            projects days on market, the price cuts that follow, the carrying cost of the wait
+            and the price the home eventually fetches — and reports the one number that
+            actually matters to a seller: net proceeds.
+          </p>
+          <a class="btn btn--ghost" href="methodology.html">How the model works</a>
+        </div>
+        <div class="card">
+          <div class="chart-block__head">
+            <div>
+              <h3 class="card__title">Net proceeds by asking price</h3>
+              <p class="card__sub" id="ladder-sub">A representative $600K listing</p>
+            </div>
+          </div>
+          <ul class="chart__legend" id="ladder-legend"></ul>
+          <div id="ladder-chart" style="min-height:250px"></div>
+          <p class="small muted" id="ladder-caption" style="margin:.7rem 0 0"></p>
+          <button class="btn btn--quiet btn--sm no-print" data-table-toggle="ladder-table" style="margin-top:.7rem">Show the numbers</button>
+          <div class="table-view" id="ladder-table" hidden></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================= how it works -->
+  <section class="section" style="background:var(--surface);border-block:1px solid var(--hairline)">
+    <div class="wrap">
+      <p class="eyebrow">How it works</p>
+      <h2 style="max-width:20ch">Five steps, and it shows its work at every one.</h2>
+      <p class="lede" style="margin-bottom:2rem">
+        A seller who cannot see why a number is what it is will not trust it. Every stage
+        below is visible in the tool, down to the individual dollar adjustments.
+      </p>
+      <div class="steps">
+        <div class="step">
+          <div>
+            <h3>Fit the market</h3>
+            <p>A hedonic regression across every closed sale recovers what this market pays for a
+              square foot, a garage bay, a decade of age and a condition grade — and how fast prices
+              are moving, with the mix of what sold held still.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div>
+            <h3>Find real comparables</h3>
+            <p>Each candidate sale is scored on location, size, recency, room count, vintage and
+              property type. The search starts tight — a mile and a half, six months — and widens
+              only when that grid comes up short.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div>
+            <h3>Adjust, line by line</h3>
+            <p>Every comp is time-adjusted to today, then walked toward the subject one feature at a
+              time. The result is the appraiser's grid: what this comp would have sold for if it
+              were your house.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div>
+            <h3>Reconcile with a confidence grade</h3>
+            <p>Comps are weighted by how comparable they actually were, and penalised for needing
+              heavy adjustment. Where they disagree, the range widens and the grade drops — rather
+              than the estimate pretending to a precision it doesn't have.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div>
+            <h3>Turn value into an asking price</h3>
+            <p>Value is not a list price. The strategist sweeps candidate prices, projects time on
+              market and net proceeds for each, and picks the number that nets the most — then
+              nudges it under the nearest portal search band so buyers can actually find it.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================== different -->
+  <section class="section">
+    <div class="wrap">
+      <p class="eyebrow">What makes it different</p>
+      <div class="grid grid--3">
+        <div class="card">
+          <h3>Rates are measured, not assumed</h3>
+          <p class="small" style="color:var(--ink-2)">
+            Most comparative market analyses carry rules of thumb from somewhere else — "a
+            bathroom is worth ten thousand dollars." PriceLens re-fits every adjustment rate from
+            the sales in front of it, so the grid reflects this market this quarter.
+          </p>
+          <dl class="kv small" id="rates-kv" style="margin-top:1rem"></dl>
+        </div>
+        <div class="card">
+          <h3>It optimises net, not headline</h3>
+          <p class="small" style="color:var(--ink-2)">
+            The highest asking price and the highest net proceeds are almost never the same
+            number. The strategist prices commission, carrying cost and the discount a stale
+            listing concedes, then recommends against its own vanity metric when the maths says to.
+          </p>
+        </div>
+        <div class="card">
+          <h3>It publishes its error rate</h3>
+          <p class="small" style="color:var(--ink-2)">
+            Every one of the 36 closed listings is re-priced using only sales that had recorded
+            before it went on the market. That backtest runs live on the results page — including
+            the cases the model got wrong.
+          </p>
+          <p class="small" style="margin-top:1rem"><a href="portfolio.html">See all 36 →</a></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ results -->
+  <section class="section" style="background:var(--surface);border-block:1px solid var(--hairline)">
+    <div class="wrap">
+      <div class="card__head">
+        <div>
+          <p class="eyebrow">In practice</p>
+          <h2>Built for a working brokerage, not a demo.</h2>
+        </div>
+        <a class="btn btn--ghost" href="portfolio.html">Full results</a>
+      </div>
+      <p class="lede" style="margin-bottom:2rem">
+        PriceLens was built and put to work inside a real estate firm, where it supported pricing
+        decisions across 36 properties and $21.8M in sales volume. Eight months in, the firm
+        switched from pricing by comparison to pricing by model. These are the two halves of
+        that book, side by side.
+      </p>
+      <div class="grid grid--4" id="adoption-tiles"></div>
+      <p class="small muted" style="margin-top:1rem">
+        Both groups are the same firm in the same market. The difference is how the asking price
+        was chosen.
+      </p>
+    </div>
+  </section>
+
+  <!-- =========================================================== advisory -->
+  <section class="section">
+    <div class="wrap grid grid--2" style="gap:clamp(1.5rem,4vw,3.5rem);align-items:start">
+      <div>
+        <p class="eyebrow">Beyond the tool</p>
+        <h2>Finding the next place this works.</h2>
+        <p>
+          Building the pricing tool was the first half of the engagement. The second was advising
+          on where else AI actually earns its keep — and, just as often, where it doesn't. Pricing
+          turned out to be a good first candidate for a specific reason: the decision is repeated,
+          the outcome is measurable within ninety days, and there is a ground truth to check the
+          model against.
+        </p>
+        <p>
+          That test — repeated decision, measurable outcome, available ground truth — is now the
+          filter for identifying other companies and workflows worth piloting.
+        </p>
+      </div>
+      <div class="card card--pad-lg">
+        <h3>What makes a good first AI pilot</h3>
+        <ol class="stack" style="padding-left:1.1rem;color:var(--ink-2);font-size:.93rem;margin:1rem 0 0">
+          <li><strong style="color:var(--ink)">The decision repeats.</strong> One-off judgement calls have nowhere to put a model.</li>
+          <li><strong style="color:var(--ink)">The outcome lands soon.</strong> If you learn whether you were right in three months, you can improve. In three years, you cannot.</li>
+          <li><strong style="color:var(--ink)">Ground truth exists.</strong> A sale price is a fact. Without one, you are shipping confidence, not accuracy.</li>
+          <li><strong style="color:var(--ink)">Being wrong is survivable.</strong> A mispriced listing costs weeks. Start where the downside is recoverable.</li>
+          <li><strong style="color:var(--ink)">Someone owns the decision today.</strong> A tool that has no human counterpart has no adoption path.</li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================================================================ cta -->
+  <section class="section--tight">
+    <div class="wrap">
+      <div class="card card--pad-lg center" style="background:var(--surface-2)">
+        <h2 style="margin-bottom:.5rem">Price a property in about thirty seconds.</h2>
+        <p class="lede" style="margin-inline:auto;margin-bottom:1.4rem">
+          Load a real listing from the market book, or type in your own. You'll get a valuation,
+          the comps behind it, every adjustment, and a recommended asking price.
+        </p>
+        <div class="btn-row" style="justify-content:center">
+          <a class="btn btn--primary" href="pricing-tool.html">Open the pricing tool</a>
+          <a class="btn btn--ghost" href="methodology.html">Read the methodology</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="footer">
+  <div class="wrap footer__grid">
+    <div>
+      <a class="brand" href="index.html" style="margin-bottom:.7rem">
+        <svg class="brand__mark" viewBox="0 0 32 32" aria-hidden="true">
+          <rect width="32" height="32" rx="8" fill="var(--brand)"/>
+          <circle cx="16" cy="16" r="8.5" fill="none" stroke="#fff" stroke-width="2.4"/>
+          <path d="M12.5 18.5l3-3.5 2.5 2 3-4.5" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        PriceLens<span class="brand__ai">&nbsp;AI</span>
+      </a>
+      <p class="small muted" style="max-width:38ch">
+        A comparable-sales valuation engine and list-price strategist for residential real estate.
+        Built by Varun Puttagunta.
+      </p>
+    </div>
+    <div>
+      <h4>Product</h4>
+      <ul>
+        <li><a href="pricing-tool.html">Pricing tool</a></li>
+        <li><a href="portfolio.html">Engagement results</a></li>
+        <li><a href="methodology.html">Methodology</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>About the data</h4>
+      <ul>
+        <li><a href="methodology.html#data">Where the numbers come from</a></li>
+        <li><a href="methodology.html#limits">What this model can't do</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="wrap" style="margin-top:2rem;padding-top:1.2rem;border-top:1px solid var(--hairline)">
+    <p class="small muted" style="margin:0">
+      © <span data-year></span> PriceLens AI. Demonstration market data is synthetic; portfolio
+      totals reflect the real engagement. Not an appraisal.
+    </p>
+  </div>
+</footer>
+
+<script src="assets/js/data.js"></script>
+<script src="assets/js/engine.js"></script>
+<script src="assets/js/charts.js"></script>
+<script src="assets/js/app.js"></script>
+<script src="assets/js/home.js"></script>
+</body>
+</html>
